@@ -1,0 +1,23 @@
+{
+  "name": "jobfinder",
+  "version": "1.0.0",
+  "description": "Este é um site de busca de empregos.",
+  "main": "app.js",
+  "scripts": {
+    "dev": "nodemon app.js"
+  },
+  "author": "Alexandre Vaz de mello <alexandrevictor.vazdemello@gmail.com>",
+  "license": "ISC",
+  "dependencies": {
+    "-": "^0.0.1",
+    "body-parser": "^1.20.2",
+    "D": "^1.0.0",
+    "express": "^4.18.2",
+    "express-handlebars": "^7.1.2",
+    "sequelize": "^6.33.0",
+    "sqlite3": "^5.1.6"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.1"
+  }
+}
