@@ -4,10 +4,11 @@ const app = express();
 const path = require('path');
 const db = require('./db/connections');
 const bodyParser = require('body-parser');
-const job = require('./models/job');
+
 
 const { engine } = require('express-handlebars');
-const Job = require('./models/job');
+const Job = require('./models/Job');
+
 // handle bars
 app.engine('handlebars', engine({ extname: '.handlebars', defaultLayout: "main"}));
 
@@ -47,20 +48,42 @@ db.authenticate()
 
 //routes
 app.get('/', (req, res) => {
-    Job.findAll({order: [
-        ['creatAt', 'DESC']
-    ]})
-    .then(jobs => {
-        
+
+    let search = req.query.job;
+    let query  = '%'+search+'%'; // PH -> PHP, Word -> Wordpress, press -> Wordpress
+  
+    if(!search) {
+      Job.findAll({order: [
+        ['createdAt', 'DESC']
+      ]})
+      .then(jobs => {
+    
         res.render('index', {
-            jobs
+          jobs
         });
-    })
-
-
-
-})
-
-//jobs routes
-app.use('/jobs', require('./route/jobs'));
-//app.use('/jobs', require('./route/jobs'));
+    
+      })
+      .catch(err => console.log(err));
+    } else {
+      Job.findAll({
+        where: {title: {[Op.like]: query}},
+        order: [
+          ['createdAt', 'DESC']
+      ]})
+      .then(jobs => {
+        console.log(search);
+        console.log(search);
+    
+        res.render('index', {
+          jobs, search
+        });
+    
+      })
+      .catch(err => console.log(err));
+    }
+  
+    
+  });
+  
+  // jobs routes
+  app.use('/jobs', require('./route/jobs'));
